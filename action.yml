@@ -27,9 +27,6 @@ runs:
           export PYTHONPATH=src
           pytest
         shell: bash
-      - name: Build package
-        run: python -m build
-        shell: bash
       - name: Build app
         run: python setup.py sdist
         shell: bash
