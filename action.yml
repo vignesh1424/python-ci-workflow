@@ -23,6 +23,5 @@ runs:
       - name: Test with pytest
         run: |
           pip install pytest
-          export PYTHONPATH=src
           pytest
         shell: bash
