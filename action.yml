@@ -29,5 +29,5 @@ runs:
       - name: code coverage Report
         run: |
           pip install pytest-cov
-          pytest --cov app
+          pytest --cov src
         shell: bash
