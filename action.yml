@@ -26,3 +26,8 @@ runs:
           export PYTHONPATH=src
           pytest
         shell: bash
+      - name: Generate Report
+        run: |
+          pip install coverage
+          coverage run -m unittest
+        shell: bash
