@@ -24,7 +24,7 @@ runs:
         run: |
           pip install pytest
           export PYTHONPATH=src
-          pytest
+          pytest --cov app
         shell: bash
       - name: Generate Report
         run: |
