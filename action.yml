@@ -30,3 +30,4 @@ runs:
         run: |
           pip install pytest-cov
           pytest --cov app
+        shell: bash
