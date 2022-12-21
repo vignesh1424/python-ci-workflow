@@ -31,8 +31,3 @@ runs:
           pip install pytest-cov
           pytest --cov src
         shell: bash
-      - name: "Upload coverage data"
-        uses: actions/upload-artifact@v3
-        with:
-          name: covdata
-          path: .coverage.* 
