@@ -36,4 +36,3 @@ runs:
         with:
           name: covdata
           path: .coverage.* 
-        shell: bash
