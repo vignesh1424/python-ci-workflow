@@ -34,36 +34,26 @@ runs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ inputs.version }}
-    - name: Custom Python Build
-      run: |
-          cd ${{ inputs.srcDir }}
-          for i in $(find . \( -name \*.txt \)); do python -m pip install --upgrade pip $i; done
-          for i in $(find . \( -name \*.txt \)); do pip install -r requirements.txt $i; done
-          for i in $(find . \( -name \*.txt \)); do pip install build $i; done
-      shell: bash
-
-    - name: Lint with flake8
-      run: |
+        
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install build
+        shell: bash
+      - name: Lint with flake8
+        run: |
           pip install flake8
           flake8 .
-      continue-on-error: true
-      shell: bash
+        continue-on-error: true
+        shell: bash
+      - name: Test with pytest
+        run: |
+          pip install pytest
+          export PYTHONPATH=src
+          pytest
 
-    - name: Run unit Tests
-      id: unit_tests
-      run: |
-        if [[ "${{inputs.unitTest}}" == "true" ]]; then
-          cd ${{ inputs.src }}
-          for i in $(find . \( -name \*.txt \)); do pip install pytest $i; done
-          pwd
-          ls -ltr
-          for i in $(find ${{inputs.testDir}} \( -name \*.py \)); do export PYTHONPATH=src $i; done
-          for i in $(find ${{inputs.testDir}} \( -name \*.py \)); do pytest $i; done
-          reports=$(find ${{inputs.testDir}} -path "*-test-results.trx" | paste -s -d ',' -)
-          echo Reports Path : "$reports"
-          echo ::set-output name=test_reports::"$reports"
-        fi
-      shell: bash
+
     - name: Run Code Coverage
       run: |
         if [[ "${{inputs.codeCoverage}}" == "true" ]]; then
