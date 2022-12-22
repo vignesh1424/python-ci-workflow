@@ -53,7 +53,10 @@ runs:
       id: unit_tests
       run: |
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
-          export PYTHONPATH=src/APIs
+          cd ${{inputs.testDir}}
+          pwd
+          ls -ltr
+          # for i in $(find ${{inputs.testDir}} \( -name \test_* \)); do export PYTHONPATH=${{inputs.srcDir}} pytest $i; ls -ltr; done
           pytest
         fi
       shell: bash
