@@ -52,8 +52,10 @@ runs:
       id: unit_tests
       run: |
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
+         if [ -f test ]; then 
         export PYTHONPATH=src
-        pytest
+        pytest;
+        fi
         fi
       shell: bash
       
