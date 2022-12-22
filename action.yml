@@ -52,9 +52,11 @@ runs:
       id: unit_tests
       run: |
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
-        cd ${{inputs.testDir}}
-        export PYTHONPATH=src
-        pytest
+         for i in $(find . \( -name \test \)); 
+         do  
+           cd ${{inputs.testDir}}
+           export PYTHONPATH=src
+           pytest
         fi
       shell: bash
           
