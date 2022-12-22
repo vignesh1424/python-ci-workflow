@@ -51,16 +51,10 @@ runs:
       id: unit_tests
       run: |
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
-          pip install pytest
-          pwd
-          ls -ltr
-          for i in $(find ${{inputs.testDir}} \( -name \*.py \)); do export PYTHONPATH=src $i; done
-          for i in $(find ${{inputs.testDir}} \( -name \*.py \)); do pytest $i; done
-          reports=$(find ${{inputs.testDir}} -path "*-test-results.trx" | paste -s -d ',' -)
-          echo Reports Path : "$reports"
-          echo ::set-output name=test_reports::"$reports"
+        pytest
         fi
       shell: bash
+      
     - name: Run Code Coverage
       run: |
         if [[ "${{inputs.codeCoverage}}" == "true" ]]; then
