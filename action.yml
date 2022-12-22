@@ -1,33 +1,73 @@
-name: 'build, test'
-description: 'composite actions'
+name: CIBT Python Build
+description: CIBT Composite Actions to build Python Project
+
+inputs:
+  srcDir:
+    description: "source directory path (default: ./src/Apis)"
+    required: false
+    default: "./src/Apis"
+  version:
+    description: python version (3.8.x)
+    required: false
+    default: 3.8.x
+  testDir:
+    description: Test directory path 
+    required: false
+    default: "./test"
+  unitTest:
+    description: run unit test (true|false)
+    required: false
+    default: "true"
+  codeCoverage:
+    description: run code coverage (true|false)
+    required: false
+    default: "false"
+outputs:
+  test_reports:
+    description: "Test Report"
+    value: ${{ steps.unit_tests.outputs.test_reports }}
+
 runs:
-  using: "composite"
+  using: composite
   steps:
-      - uses: actions/checkout@v2.1.0
-      - name: Set up Python 3
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install build
-        shell: bash
-      - name: Lint with flake8
-        run: |
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ inputs.version }}
+    - name: Custom Python Build
+      run: |
+          cd ${{ inputs.srcDir }}
+          for i in $(find . \( -name \*.txt \)); do python -m pip install --upgrade pip $i; done
+          for i in $(find . \( -name \*.txt \)); do pip install -r requirements.txt $i; done
+          for i in $(find . \( -name \*.txt \)); do pip install build $i; done
+      shell: bash
+
+    - name: Lint with flake8
+      run: |
           pip install flake8
           flake8 .
-        continue-on-error: true
-        shell: bash
-      - name: Test with pytest
-        run: |
-          pip install pytest
-          export PYTHONPATH=src
-          pytest
-        shell: bash
-      - name: code coverage Report
-        run: |
+      continue-on-error: true
+      shell: bash
+
+    - name: Run unit Tests
+      id: unit_tests
+      run: |
+        if [[ "${{inputs.unitTest}}" == "true" ]]; then
+          cd ${{ inputs.src }}
+          for i in $(find . \( -name \*.txt \)); do pip install pytest $i; done
+          pwd
+          ls -ltr
+          for i in $(find ${{inputs.testDir}} \( -name \*.py \)); do export PYTHONPATH=src $i; done
+          for i in $(find ${{inputs.testDir}} \( -name \*.py \)); do pytest $i; done
+          reports=$(find ${{inputs.testDir}} -path "*-test-results.trx" | paste -s -d ',' -)
+          echo Reports Path : "$reports"
+          echo ::set-output name=test_reports::"$reports"
+        fi
+      shell: bash
+    - name: Run Code Coverage
+      run: |
+        if [[ "${{inputs.codeCoverage}}" == "true" ]]; then
           pip install pytest-cov
           pytest --cov src
-        shell: bash
+        fi
+      shell: bash
