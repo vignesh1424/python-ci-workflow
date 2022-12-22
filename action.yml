@@ -39,9 +39,9 @@ runs:
           pwd
           ls -ltr
           cd ${{ inputs.srcDir }}
-          for i in $(find . \( -name \*.txt \)); do python -m pip install --upgrade pip $i; done
-          for i in $(find . \( -name \*.txt \)); do pip install -r requirements.txt $i; done
-          for i in $(find . \( -name \*.txt \)); do pip install build $i; done
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 
+          pip install build
       shell: bash
 
     - name: Lint with flake8
