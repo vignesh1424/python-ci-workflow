@@ -54,6 +54,6 @@ runs:
       run: |
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
           export PYTHONPATH=src
-          pytest --cov src
+          pytest
         fi
       shell: bash
