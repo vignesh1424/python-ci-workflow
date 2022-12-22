@@ -54,8 +54,6 @@ runs:
       run: |
         cd ${{inputs.testDir}}
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
-          pwd
-          ls -ltr
-          for i in $(find ${{inputs.testDir}} \( -name \test_* \)); do export PYTHONPATH=src pytest $i; ls -ltr; done
+          pytest --cov src
         fi
       shell: bash
