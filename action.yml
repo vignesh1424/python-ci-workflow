@@ -48,16 +48,5 @@ runs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       shell: bash
       
-    - name: Run unit Tests
-      id: unit_tests
-      run: |
-        cd ${{inputs.testDir}}
-        if [[ "${{inputs.unitTest}}" == "true" ]]; then
-          for i in $(find . \( -name \test \)); 
-          do  
-           export PYTHONPATH=src
-           pytest
-          done
-        fi
-      shell: bash
-          
+    - name: Test
+      uses: onichandame/python-test-action@master
