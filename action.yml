@@ -57,6 +57,7 @@ runs:
            cd ${{inputs.testDir}}
            export PYTHONPATH=src
            pytest
-          fi
+          done
+        fi
       shell: bash
           
