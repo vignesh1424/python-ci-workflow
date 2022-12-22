@@ -37,8 +37,5 @@ runs:
     - name: Install dependencies
         run: |
           cd ${{ inputs.srcDir }}
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install build
         
  
