@@ -52,7 +52,6 @@ runs:
     - name: Run unit Tests
       id: unit_tests
       run: |
-        cd ${{inputs.testDir}}
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
           pytest --cov src
         fi
