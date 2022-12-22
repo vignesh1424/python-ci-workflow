@@ -35,30 +35,4 @@ runs:
       with:
         python-version: ${{ inputs.version }}
         
-      - name: Install dependencies
-        run: |
-          cd ${{ inputs.srcDir }}
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install build
-        shell: bash
-      - name: Lint with flake8
-        run: |
-          pip install flake8
-          flake8 .
-        continue-on-error: true
-        shell: bash
-      - name: Test with pytest
-        run: |
-          pip install pytest
-          export PYTHONPATH=src
-          pytest
-
-
-    - name: Run Code Coverage
-      run: |
-        if [[ "${{inputs.codeCoverage}}" == "true" ]]; then
-          pip install pytest-cov
-          pytest --cov src
-        fi
-      shell: bash
+ 
