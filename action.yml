@@ -48,9 +48,7 @@ runs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       shell: bash
       
-    - name: Run Code Coverage
+    - name: Generate Report
       run: |
-        if [[ "${{inputs.codeCoverage}}" == "true" ]]; then
-          pytest --cov src
-        fi
-      shell: bash
+        pip install coverage
+        coverage run -m unittest
