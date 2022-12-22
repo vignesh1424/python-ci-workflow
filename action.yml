@@ -49,10 +49,13 @@ runs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       shell: bash
       
-    - name: Run Code Coverage
+    - name: Run unit Tests
+      id: unit_tests
       run: |
-        if [[ "${{inputs.codeCoverage}}" == "true" ]]; then
-          export PYTHONPATH=src
-          pytest --cov src
+        cd ${{inputs.testDir}}
+        if [[ "${{inputs.unitTest}}" == "true" ]]; then
+          pwd
+          ls -ltr
+          for i in $(find ${{inputs.testDir}} \( -name \test_* \)); do export PYTHONPATH=src pytest $i; ls -ltr; done
         fi
       shell: bash
