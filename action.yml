@@ -34,10 +34,14 @@ runs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ inputs.version }}
+    - name: Custom Python Build
+      run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Lint with flake8
       run: |
-          pip install flake8
           flake8 .
       continue-on-error: true
       shell: bash
@@ -46,8 +50,7 @@ runs:
       id: unit_tests
       run: |
         if [[ "${{inputs.unitTest}}" == "true" ]]; then
-          cd ${{ inputs.src }}
-          for i in $(find . \( -name \*.txt \)); do pip install pytest $i; done
+          pip install pytest
           pwd
           ls -ltr
           for i in $(find ${{inputs.testDir}} \( -name \*.py \)); do export PYTHONPATH=src $i; done
