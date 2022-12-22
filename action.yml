@@ -38,6 +38,7 @@ runs:
       run: |
           python -m pip install --upgrade pip
           pip install flake8 pytest
+          pip install coverage
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       shell: bash
     - name: Lint with flake8
@@ -50,5 +51,5 @@ runs:
       
     - name: Generate Report
       run: |
-        pip install coverage
         coverage run -m unittest
+      shell: bash
